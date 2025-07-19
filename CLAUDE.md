@@ -47,7 +47,11 @@ pytest
 # Test the logic without MCP dependencies
 python simple_test.py
 
+# Test graph conversion functionality (requires OPENAI_API_KEY)
+python test_graph_conversion.py
+
 # Note: Install with 'pip install "mcp[cli]"' for full MCP functionality
+# For graph functionality, also need: export OPENAI_API_KEY='your-key-here'
 ```
 
 ### Code Quality
