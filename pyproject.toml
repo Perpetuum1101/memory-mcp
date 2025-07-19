@@ -1,0 +1,20 @@
+[project]
+name = "memory-mcp"
+version = "0.1.0"
+description = "Memory management MCP server"
+authors = [{name = "Perpetuum1101"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+    "mypy",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
