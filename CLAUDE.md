@@ -4,48 +4,59 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Memory Management MCP (Model Context Protocol) server that provides tools for storing and retrieving key-value memory. The server implements an async MCP server using the `mcp` library and provides two main tools: `get_memory` and `save_memory`.
+This is a Memory Management MCP (Model Context Protocol) server that provides tools for storing and retrieving key-value memory. The server uses FastMCP for simplified MCP server implementation and provides two main tools: `get_memory` and `save_memory`.
 
 ## Architecture
 
-The server follows a simple async architecture:
-- **Server**: `src/memory_mcp/server.py` contains the main MCP server implementation
+The server uses FastMCP for simplified implementation:
+
+- **Server**: `src/memory_mcp/server.py` contains the FastMCP server implementation
 - **Storage**: Uses in-memory dictionary storage (`memory_store`) for simplicity
-- **Tools**: Provides `get_memory` and `save_memory` tools via MCP protocol
-- **Entry Point**: Server can be run via `memory-mcp` command or `python -m memory_mcp.server`
+- **Tools**: Provides `get_memory` and `save_memory` tools via `@mcp.tool()` decorators
+- **Entry Point**: Server can be run via `memory-mcp` command
+- **Framework**: Uses FastMCP from `mcp.server.fastmcp` for simplified server creation
+- **Dependencies**: Requires `mcp[cli]` library for FastMCP implementation
 
 ## Development Commands
 
 ### Installation
+
 ```bash
 # Install in development mode with dev dependencies
 pip install -e ".[dev]"
 ```
 
 ### Running the Server
+
 ```bash
 # Run as installed command
 memory-mcp
 
-# Or run directly
-python src/memory_mcp/server.py
+# Note: FastMCP servers are typically run via the CLI command above
 ```
 
 ### Testing
+
 ```bash
 # Run the simple test script
 python test_server.py
 
 # Run pytest (when test suite exists)
 pytest
+
+# Test the logic without MCP dependencies
+python simple_test.py
+
+# Note: Install with 'pip install "mcp[cli]"' for full MCP functionality
 ```
 
 ### Code Quality
+
 ```bash
 # Format code
 black src/
 
-# Lint code  
+# Lint code
 flake8 src/
 
 # Type checking
@@ -74,3 +85,10 @@ Transform user commands into structured functional specifications and maintain t
 Create specs for: Feature requests, functionality changes, new integrations, business logic modifications, API changes, data structure updates
 
 Skip specs for: Code formatting, simple refactoring, documentation updates, bug fixes without functional changes, development setup
+
+## Important Notes
+
+- **Storage Limitation**: Current implementation uses in-memory storage only - data is lost when server restarts
+- **MCP Protocol**: Server communicates via stdio and expects MCP-compliant clients
+- **FastMCP Design**: Uses simplified FastMCP decorator-based approach instead of manual async handlers
+- **Tool Functions**: Tools are regular Python functions decorated with `@mcp.tool()`
